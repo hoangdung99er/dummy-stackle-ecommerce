@@ -11,7 +11,15 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import { AddShoppingCart, Home, Logout } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import {
+  AddShoppingCart,
+  Home,
+  Logout,
+  ProductionQuantityLimits,
+} from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
+
 function Drawer({ isOpen, setPosition, setIsOpen }) {
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -27,10 +35,17 @@ function Drawer({ isOpen, setPosition, setIsOpen }) {
 
   const mockData = [
     {
+      to: "/",
       text: "Home Page",
       icon: <Home />,
     },
     {
+      to: "/products",
+      text: "Products",
+      icon: <ProductionQuantityLimits />,
+    },
+    {
+      to: "/cart",
       text: "Cart",
       icon: <AddShoppingCart />,
     },
@@ -75,11 +90,13 @@ function Drawer({ isOpen, setPosition, setIsOpen }) {
       </Box>
       <Divider />
       <List>
-        {mockData.map(({ text, icon }, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
+        {mockData.map(({ text, icon, to }, index) => (
+          <CustomLink key={text} to={to}>
+            <ListItem sx={{ height: 50, paddingLeft: "16px" }} button>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          </CustomLink>
         ))}
       </List>
     </Box>
@@ -98,5 +115,9 @@ function Drawer({ isOpen, setPosition, setIsOpen }) {
     </React.Fragment>
   );
 }
+
+const CustomLink = styled(Link)({
+  textDecoration: "none",
+});
 
 export default Drawer;

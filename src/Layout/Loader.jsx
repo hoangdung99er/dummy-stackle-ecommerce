@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, CircularProgress } from "@mui/material";
 
-function Loader() {
+function Loader({ fix }) {
   return (
     <Box
       sx={{
@@ -9,6 +9,7 @@ function Loader() {
         alignItems: "center",
         justifyContent: "center",
         mt: 6,
+        height: fix && "55vh",
       }}
     >
       <CircularProgress size={60} />

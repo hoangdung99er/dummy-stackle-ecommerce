@@ -19,6 +19,7 @@ import {
   MoreVert,
   Menu as MenuIcon,
 } from "@mui/icons-material";
+import { useHistory } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -61,6 +62,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Header({ handleDrawer }) {
+  const [keyword, setKeyword] = React.useState();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -86,6 +89,16 @@ function Header({ handleDrawer }) {
 
   const onToggleDrawer = () => {
     handleDrawer("left", true);
+  };
+
+  const searchSubmitHandler = (e) => {
+    e.preventDefault();
+
+    if (keyword.trim()) {
+      history.push(`/products/${keyword}`);
+    } else {
+      history.push("/products");
+    }
   };
 
   const menuId = "primary-search-account-menu";
@@ -184,15 +197,19 @@ function Header({ handleDrawer }) {
           >
             MUI
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+          <Box onSubmit={searchSubmitHandler} component="form">
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                onChange={(e) => setKeyword(e.target.value)}
+                inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
+          </Box>
+
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton

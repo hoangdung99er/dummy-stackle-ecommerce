@@ -1,12 +1,14 @@
 import React from "react";
 import { Alert as MuiAlert, Snackbar, Button } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { clearErrors } from "../store/actions/productAction";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 export default function CustomizedSnackbars() {
+  const dispatch = useDispatch();
   const { error } = useSelector((state) => state.products);
   const [custom, setCustom] = React.useState({
     open: false,
@@ -20,6 +22,7 @@ export default function CustomizedSnackbars() {
       setCustom({ ...custom, open: true });
     } else {
       setCustom({ ...custom, open: false });
+      dispatch(clearErrors());
     }
   }, [error]);
 
@@ -43,7 +46,7 @@ export default function CustomizedSnackbars() {
         autoHideDuration={6000}
         onClose={handleClose}
       >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
           {error}
         </Alert>
       </Snackbar>

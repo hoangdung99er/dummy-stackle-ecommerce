@@ -12,6 +12,9 @@ const inputGlobalStyles = (
       "*": {
         scrollBehavior: "smooth",
       },
+      body: {
+        overflowX: "hidden",
+      },
     }}
   />
 );

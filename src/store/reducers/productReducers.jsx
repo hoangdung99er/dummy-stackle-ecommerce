@@ -34,3 +34,39 @@ export const productReducer = (state = initialState, { type, payload }) => {
       return state;
   }
 };
+
+const initialStateProducts = {
+  product: {},
+};
+
+export const productDetailsReducer = (
+  state = initialStateProducts,
+  { type, payload }
+) => {
+  switch (type) {
+    case types.PRODUCT_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.PRODUCT_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        product: payload,
+      };
+    case types.PRODUCT_DETAILS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
+      };
+    case types.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};

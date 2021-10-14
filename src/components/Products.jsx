@@ -33,7 +33,7 @@ function Products() {
             >
               {products &&
                 products.map((product) => (
-                  <Link key={product._id} to={product._id}>
+                  <Link key={product._id} to={`/product/${product._id}`}>
                     <ProductItem product={product} />
                   </Link>
                 ))}
