@@ -10,6 +10,7 @@ import {
   Badge,
   MenuItem,
   Menu,
+  Button,
 } from "@mui/material";
 import {
   Search as SearchIcon,
@@ -18,6 +19,7 @@ import {
   Notifications,
   MoreVert,
   Menu as MenuIcon,
+  Login,
 } from "@mui/icons-material";
 import { useHistory } from "react-router-dom";
 
@@ -241,6 +243,17 @@ function Header({ handleDrawer }) {
             >
               <AccountCircle />
             </IconButton>
+          </Box>
+
+          <Box sx={{ display: { xs: "flex", margin: "0 10px" } }}>
+            <Button
+              color="inherit"
+              onClick={() => history.push("/login")}
+              variant="outlined"
+              endIcon={<Login />}
+            >
+              Login
+            </Button>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton

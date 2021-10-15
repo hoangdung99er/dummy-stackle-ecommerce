@@ -22,6 +22,7 @@ import Loader from "../Layout/Loader";
 import Alert from "../Layout/Alert";
 import { styled } from "@mui/material/styles";
 import { ReviewCard } from "../components";
+import MetaData from "../Meta/MetaData";
 
 function ProductDetails({ match }) {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function ProductDetails({ match }) {
 
   return (
     <React.Fragment>
+      <MetaData title={`${product?.name}`} />
       <Alert />
       <Box
         sx={{

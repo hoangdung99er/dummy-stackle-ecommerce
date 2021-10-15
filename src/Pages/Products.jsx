@@ -2,7 +2,7 @@ import React from "react";
 import Loader from "../Layout/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProduct } from "../store/actions/productAction";
-import { ProductItem } from "../components";
+import { ProductItem, RatingFilter } from "../components";
 import {
   Box,
   Grid,
@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import Alert from "../Layout/Alert";
+import MetaData from "../Meta/MetaData";
 
 const categories = [
   "Laptop",
@@ -33,12 +34,13 @@ function Products() {
   const { keyword } = useParams();
   const [page, setPage] = React.useState(1);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [rating, setRating] = React.useState(0);
   const [category, setCategory] = React.useState("");
   const [price, setPrice] = React.useState([0, 25000]);
 
   React.useEffect(() => {
-    dispatch(getAllProduct(keyword, page, price, category));
-  }, [dispatch, keyword, page, price, category]);
+    dispatch(getAllProduct(keyword, page, price, category, rating));
+  }, [dispatch, keyword, page, price, category, rating]);
 
   const LIMITPERPAGE = 10;
 
@@ -53,7 +55,7 @@ function Products() {
   };
 
   const checkTotalProduct = () => {
-    if (products?.length >= LIMITPERPAGE) {
+    if (products?.length >= LIMITPERPAGE || page > 1) {
       return true;
     }
     return false;
@@ -61,6 +63,7 @@ function Products() {
 
   return (
     <React.Fragment>
+      <MetaData title="PRODUCTS" />
       <Alert />
       <Box
         sx={{
@@ -117,6 +120,7 @@ function Products() {
                 ))}
               </Box>
             </Box>
+            <RatingFilter setRating={setRating} />
           </>
         )}
         {loading ? (

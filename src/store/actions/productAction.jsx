@@ -1,20 +1,21 @@
-import axios from "axios";
 import * as types from "../constants/productConstant";
 import { FetchAPI } from "../../store/lib/callApi";
 
 export const getAllProduct =
-  (keyword = "", page = 1, price = [0, 25000], category) =>
+  (keyword = "", page = 1, price = [0, 25000], category, rating = 0) =>
   async (dispatch) => {
     dispatch({ type: types.ALL_PRODUCT_REQUEST });
 
     let endpoint = `/products?keyword=${keyword}&page=${
       page > 1 && keyword ? 1 : page
-    }&price[gte]=${price[0]}&price[lte]=${price[1]}`;
+    }&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${rating}`;
 
     if (category) {
       endpoint = `/products?keyword=${keyword}&page=${
         page > 1 && keyword ? 1 : page
-      }&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}`;
+      }&price[gte]=${price[0]}&price[lte]=${
+        price[1]
+      }&category=${category}&ratings[gte]=${rating}`;
     }
 
     const { responseData, error } = await FetchAPI(endpoint);
