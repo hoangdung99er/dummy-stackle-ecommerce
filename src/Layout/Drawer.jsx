@@ -18,6 +18,7 @@ import {
   Logout,
   ProductionQuantityLimits,
 } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 
 function Drawer({ isOpen, setPosition, setIsOpen }) {
@@ -32,6 +33,8 @@ function Drawer({ isOpen, setPosition, setIsOpen }) {
     setPosition(anchor);
     setIsOpen(open);
   };
+
+  const { isAuthenticated } = useSelector((state) => state.user);
 
   const mockData = [
     {
@@ -71,24 +74,28 @@ function Drawer({ isOpen, setPosition, setIsOpen }) {
         E-commerce DDTocyh
       </Typography>
       <Divider />
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          margin: "20px 0",
-        }}
-      >
-        <Avatar
-          sx={{ mr: 4 }}
-          alt="Remy Sharp"
-          src="https://images.pexels.com/photos/7166173/pexels-photo-7166173.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-        />
-        <Button sx={{ mr: 2 }} variant="outlined" endIcon={<Logout />}>
-          Sign Out
-        </Button>
-      </Box>
-      <Divider />
+      {isAuthenticated && (
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "20px 0",
+            }}
+          >
+            <Avatar
+              sx={{ mr: 4 }}
+              alt="Remy Sharp"
+              src="https://images.pexels.com/photos/7166173/pexels-photo-7166173.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+            />
+            <Button sx={{ mr: 2 }} variant="outlined" endIcon={<Logout />}>
+              Sign Out
+            </Button>
+          </Box>
+          <Divider />
+        </>
+      )}
       <List>
         {mockData.map(({ text, icon, to }, index) => (
           <CustomLink key={text} to={to}>

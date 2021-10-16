@@ -5,6 +5,7 @@ import SwipeableViews from "react-swipeable-views";
 import { Login, Register } from "../components";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import Alert from "../Layout/Alert";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,7 +66,7 @@ function Authentication() {
       <Box
         sx={{
           width: { xs: "80%", sm: "60%", md: "50%", lg: "30%" },
-          height: "58%",
+          height: "60%",
           backgroundColor: "white",
         }}
       >

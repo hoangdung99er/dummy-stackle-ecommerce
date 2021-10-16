@@ -12,6 +12,7 @@ export const FetchAPI = async (
       method: method,
       body: method === "GET" ? null : JSON.stringify(body),
       headers: headers,
+      credentials: "include",
     });
     let error = "";
     const responseData = await response.json();

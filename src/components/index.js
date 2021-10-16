@@ -6,3 +6,4 @@ export { default as ReviewCard } from "./ReviewCard";
 export { default as RatingFilter } from "./RatingFilter";
 export { default as Login } from "./Login";
 export { default as Register } from "./Register";
+export { default as UserOptions } from "./UserOptions";

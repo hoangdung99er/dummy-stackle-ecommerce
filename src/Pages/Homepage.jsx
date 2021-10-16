@@ -19,7 +19,7 @@ function Homepage() {
       <Box
         sx={{
           background: "linear-gradient(to right, #635dc0, #3027ae)",
-          mt: { xs: 7, sm: 7 },
+          mt: { xs: 4, sm: 4 },
         }}
       >
         <Box

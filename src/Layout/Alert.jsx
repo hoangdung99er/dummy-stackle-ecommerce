@@ -11,7 +11,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 export default function CustomizedSnackbars() {
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.products);
-  const { error: userError, user } = useSelector((state) => state.user);
+  const {
+    error: userError,
+    errorSignUp,
+    errorLoadUser,
+  } = useSelector((state) => state.user);
   const [custom, setCustom] = React.useState({
     open: false,
     vertical: "bottom",
@@ -20,7 +24,7 @@ export default function CustomizedSnackbars() {
 
   const { open, vertical, horizontal } = custom;
   React.useEffect(() => {
-    if (error || userError) {
+    if (error || userError || errorSignUp || errorLoadUser) {
       setCustom({ ...custom, open: true });
     } else {
       setCustom({ ...custom, open: false });
@@ -48,7 +52,7 @@ export default function CustomizedSnackbars() {
         onClose={handleClose}
       >
         <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          {error || userError}
+          {error || userError || errorSignUp || errorLoadUser}
         </Alert>
       </Snackbar>
     </>

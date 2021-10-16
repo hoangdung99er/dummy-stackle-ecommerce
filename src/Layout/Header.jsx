@@ -21,6 +21,7 @@ import {
   Menu as MenuIcon,
   Login,
 } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
@@ -68,6 +69,7 @@ function Header({ handleDrawer }) {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const { isAuthenticated } = useSelector((state) => state.user);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -245,16 +247,19 @@ function Header({ handleDrawer }) {
             </IconButton>
           </Box>
 
-          <Box sx={{ display: { xs: "flex", margin: "0 10px" } }}>
-            <Button
-              color="inherit"
-              onClick={() => history.push("/login")}
-              variant="outlined"
-              endIcon={<Login />}
-            >
-              Login
-            </Button>
-          </Box>
+          {!isAuthenticated && (
+            <Box sx={{ display: { xs: "flex", margin: "0 10px" } }}>
+              <Button
+                color="inherit"
+                onClick={() => history.push("/login")}
+                variant="outlined"
+                endIcon={<Login />}
+              >
+                Login
+              </Button>
+            </Box>
+          )}
+
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"

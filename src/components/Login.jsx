@@ -62,6 +62,7 @@ function Login() {
   return (
     <React.Fragment>
       <Alert />
+
       <form onSubmit={handleSubmitLogin}>
         <FormControl fullWidth variant="outlined">
           <InputLabel htmlFor="outlined-adornment-email">E-mail</InputLabel>
@@ -72,7 +73,7 @@ function Login() {
               </InputAdornment>
             }
             id="outlined-adornment-email"
-            type="text"
+            type="email"
             value={values.email}
             onChange={handleChangeValues("email")}
             label="-Email"
