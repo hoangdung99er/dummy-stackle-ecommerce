@@ -6,6 +6,7 @@ import { Login, Register } from "../components";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Alert from "../Layout/Alert";
+import MetaData from "../Meta/MetaData";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,56 +49,60 @@ function Authentication() {
   }, [isAuthenticated, history]);
 
   return (
-    <Box
-      sx={{
-        bgcolor: "lightgray",
-        width: 500,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: "100vh",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 20,
-      }}
-    >
+    <React.Fragment>
+      <MetaData title="LOGIN" />
+
       <Box
         sx={{
-          width: { xs: "80%", sm: "60%", md: "50%", lg: "30%" },
-          height: "60%",
-          backgroundColor: "white",
+          bgcolor: "lightgray",
+          width: 500,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100vh",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          zIndex: 20,
         }}
       >
-        <AppBar position="static">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-            sx={{ backgroundColor: "white" }}
-            aria-label="full width tabs example"
-          >
-            <Tab label="LOGIN" {...allyProps(0)} />
-            <Tab label="REGISTER" {...allyProps(1)} />
-          </Tabs>
-        </AppBar>
-        <SwipeableViews
-          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-          index={value}
-          onChangeIndex={handleChangeIndex}
+        <Box
+          sx={{
+            width: { xs: "80%", sm: "60%", md: "50%", lg: "30%" },
+            height: "60%",
+            backgroundColor: "white",
+          }}
         >
-          <TabPanel value={value} index={0} dir={theme.direction}>
-            <Login />
-          </TabPanel>
-          <TabPanel value={value} index={1} dir={theme.direction}>
-            <Register />
-          </TabPanel>
-        </SwipeableViews>
+          <AppBar position="static">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+              sx={{ backgroundColor: "white" }}
+              aria-label="full width tabs example"
+            >
+              <Tab label="LOGIN" {...allyProps(0)} />
+              <Tab label="REGISTER" {...allyProps(1)} />
+            </Tabs>
+          </AppBar>
+          <SwipeableViews
+            axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+            index={value}
+            onChangeIndex={handleChangeIndex}
+          >
+            <TabPanel value={value} index={0} dir={theme.direction}>
+              <Login />
+            </TabPanel>
+            <TabPanel value={value} index={1} dir={theme.direction}>
+              <Register />
+            </TabPanel>
+          </SwipeableViews>
+        </Box>
       </Box>
-    </Box>
+    </React.Fragment>
   );
 }
 

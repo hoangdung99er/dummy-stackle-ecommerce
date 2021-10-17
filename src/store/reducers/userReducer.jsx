@@ -77,16 +77,19 @@ export const profileReducer = (
 ) => {
   switch (type) {
     case types.UPDATE_PROFILE_REQUEST:
+    case types.UPDATE_PASSWORD_REQUEST:
       return {
         ...state,
         loading: true,
       };
     case types.UPDATE_PROFILE_SUCCESS:
+    case types.UPDATE_PASSWORD_SUCCESS:
       return {
         ...state,
         loading: false,
-        isUpdated: payload?.success,
+        isUpdated: !!payload?.user,
       };
+    case types.UPDATE_PROFILE_FAILURE:
     case types.UPDATE_PROFILE_FAILURE:
       return {
         ...state,
@@ -94,6 +97,7 @@ export const profileReducer = (
         error: payload,
       };
     case types.UPDATE_PROFILE_RESET:
+    case types.UPDATE_PASSWORD_RESET:
       return {
         ...state,
         isUpdated: false,
@@ -103,6 +107,46 @@ export const profileReducer = (
       return {
         ...state,
         error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const forgotPasswordReducer = (state = {}, { type, payload }) => {
+  switch (type) {
+    case types.FORGOT_PASSWORD_REQUEST:
+    case types.RESET_PASSWORD_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case types.FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: payload?.message,
+      };
+    case types.RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: payload?.success,
+      };
+    case types.FORGOT_PASSWORD_FAILURE:
+    case types.RESET_PASSWORD_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
+      };
+
+    case types.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+        message: null,
       };
     default:
       return state;

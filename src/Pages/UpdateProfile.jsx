@@ -9,6 +9,8 @@ import Alert from "../Layout/Alert";
 import LoadingButton from "../Layout/LoadingButton";
 import { UPDATE_PROFILE_RESET } from "../store/constants/userConstant";
 import { styled } from "@mui/material/styles";
+import { useHistory } from "react-router-dom";
+import MetaData from "../Meta/MetaData";
 
 import {
   Typography,
@@ -24,6 +26,8 @@ import {
 } from "@mui/material";
 
 function UpdateProfile() {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
   const { error, isUpdated, loading } = useSelector((state) => state.profile);
@@ -38,8 +42,6 @@ function UpdateProfile() {
 
   const { email, name } = values;
 
-  const dispatch = useDispatch();
-
   const handleChangeValues = (prop) => (event) => {
     if (prop === "avatar") {
       const reader = new FileReader();
@@ -52,15 +54,12 @@ function UpdateProfile() {
       };
       reader.readAsDataURL(event.target.files[0]);
     } else {
-      setValues({ ...state, [prop]: event.target.value });
+      setValues({ ...values, [prop]: event.target.value });
     }
   };
 
   const updateProfileHandleSubmit = (e) => {
     e.preventDefault();
-
-    console.log(email, name);
-    console.log(file);
 
     const userData = {
       name,
@@ -80,12 +79,13 @@ function UpdateProfile() {
     if (isUpdated) {
       dispatch(onLoadUserAction());
       history.push("/account");
+      dispatch({ type: UPDATE_PROFILE_RESET });
     }
-    dispatch({ type: UPDATE_PROFILE_RESET });
   }, [dispatch, user, isUpdated]);
 
   return (
     <React.Fragment>
+      <MetaData title={`Update ${user?.name}'s Profile`} />
       <Box sx={{ height: "74vh", p: 6 }}>
         <CustomForm onSubmit={updateProfileHandleSubmit}>
           <Typography variant="h4" sx={{ color: "#a79f9f", mb: 3 }}>
@@ -102,7 +102,7 @@ function UpdateProfile() {
               id="outlined-adornment-email"
               type="email"
               value={values.email}
-              onChange={handleChangeValues("meail")}
+              onChange={handleChangeValues("email")}
               label="E-mail"
             />
           </FormControl>

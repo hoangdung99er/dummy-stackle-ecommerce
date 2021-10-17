@@ -20,9 +20,11 @@ import { useParams } from "react-router-dom";
 import { Add, Remove } from "@mui/icons-material";
 import Loader from "../Layout/Loader";
 import Alert from "../Layout/Alert";
+import SuccessAlert from "../Layout/SuccessAlert";
 import { styled } from "@mui/material/styles";
 import { ReviewCard } from "../components";
 import MetaData from "../Meta/MetaData";
+import { addItemsToCart } from "../store/actions/cartAction";
 
 function ProductDetails({ match }) {
   const dispatch = useDispatch();
@@ -30,14 +32,40 @@ function ProductDetails({ match }) {
     (state) => state.productDetails
   );
 
+  const [quantity, setQuantity] = React.useState(1);
+
   React.useEffect(() => {
     dispatch(getProductDetails(match.params.id));
   }, [dispatch]);
 
+  const increaseQuantity = () => {
+    if (product?.stock <= quantity) {
+      return;
+    }
+    setQuantity(quantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    if (quantity <= 1) {
+      return;
+    }
+    setQuantity((prev) => prev - 1);
+  };
+
+  const addToCartHandler = () => {
+    dispatch(addItemsToCart(match.params.id, quantity));
+  };
+
+  const handleChangeQuantity = (e) => {
+    setQuantity(e.target.value);
+  };
+
   return (
     <React.Fragment>
-      <MetaData title={`${product?.name}`} />
       <Alert />
+      <SuccessAlert />
+
+      {!loading && <MetaData title={`${product?.name}`} />}
       <Box
         sx={{
           background: "rgb(214,214,214)",
@@ -159,8 +187,9 @@ function ProductDetails({ match }) {
                       edge="start"
                       color="inherit"
                       aria-label="add quantity"
+                      onClick={decreaseQuantity}
                     >
-                      <Add />
+                      <Remove />
                     </IconButton>
                     <TextField
                       id="standard-number"
@@ -170,26 +199,34 @@ function ProductDetails({ match }) {
                         shrink: true,
                       }}
                       variant="standard"
-                      defaultValue={1}
                       size="small"
                       sx={{ width: "40%", margin: "0 6px" }}
                       InputProps={{
                         inputProps: {
                           min: 1,
-                          max: 25,
+                          max: product?.stock,
                         },
+                        readOnly: true,
                       }}
+                      value={quantity}
+                      onChange={handleChangeQuantity}
                     />
+
                     <IconButton
                       size="small"
                       edge="start"
                       color="inherit"
                       aria-label="add quantity"
+                      onClick={increaseQuantity}
                     >
-                      <Remove />
+                      <Add />
                     </IconButton>
                   </CardActions>
-                  <Button size="large" variant="contained">
+                  <Button
+                    onClick={addToCartHandler}
+                    size="large"
+                    variant="contained"
+                  >
                     Add To Cart
                   </Button>
                 </Box>

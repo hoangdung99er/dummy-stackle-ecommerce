@@ -99,12 +99,11 @@ export const onUpdateUserAction = (userData) => {
     dispatch({ type: types.UPDATE_PROFILE_REQUEST });
 
     const { responseData, error } = await FetchAPI(
-      `/update/me`,
+      `/me/update`,
       "PUT",
       userData,
       {
         "Content-Type": "application/json",
-        Accept: "application/json",
       }
     );
 
@@ -116,6 +115,88 @@ export const onUpdateUserAction = (userData) => {
     } else {
       dispatch({
         type: types.UPDATE_PROFILE_FAILURE,
+        payload: error,
+      });
+    }
+  };
+};
+
+// Update Password
+export const onUpdatePassword = (passwords) => {
+  return async (dispatch) => {
+    dispatch({ type: types.UPDATE_PASSWORD_REQUEST });
+
+    const { responseData, error } = await FetchAPI(
+      `/password/update`,
+      "PUT",
+      passwords,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+
+    if (!error) {
+      dispatch({
+        type: types.UPDATE_PASSWORD_SUCCESS,
+        payload: responseData,
+      });
+    } else {
+      dispatch({
+        type: types.UPDATE_PROFILE_FAILURE,
+        payload: error,
+      });
+    }
+  };
+};
+
+export const onResetPassword = (email) => {
+  return async (dispatch) => {
+    dispatch({ type: types.FORGOT_PASSWORD_REQUEST });
+
+    const { responseData, error } = await FetchAPI(
+      `/password/forgot`,
+      "POST",
+      email,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+
+    if (!error) {
+      dispatch({
+        type: types.FORGOT_PASSWORD_SUCCESS,
+        payload: responseData,
+      });
+    } else {
+      dispatch({
+        type: types.FORGOT_PASSWORD_FAILURE,
+        payload: error,
+      });
+    }
+  };
+};
+
+export const onForgotPassword = (token, userData) => {
+  return async (dispatch) => {
+    dispatch({ type: types.RESET_PASSWORD_REQUEST });
+
+    const { responseData, error } = await FetchAPI(
+      `/password/reset/${token}`,
+      "PUT",
+      userData,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+
+    if (!error) {
+      dispatch({
+        type: types.RESET_PASSWORD_SUCCESS,
+        payload: responseData,
+      });
+    } else {
+      dispatch({
+        type: types.RESET_PASSWORD_FAILURE,
         payload: error,
       });
     }

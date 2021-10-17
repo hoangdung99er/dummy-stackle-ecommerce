@@ -11,11 +11,16 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 export default function CustomizedSnackbars() {
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.products);
+  const { error: profileError } = useSelector((state) => state.profile);
   const {
     error: userError,
     errorSignUp,
     errorLoadUser,
   } = useSelector((state) => state.user);
+  const { message, error: resetPasswordError } = useSelector(
+    (state) => state.forgotPassword
+  );
+
   const [custom, setCustom] = React.useState({
     open: false,
     vertical: "bottom",
@@ -24,14 +29,22 @@ export default function CustomizedSnackbars() {
 
   const { open, vertical, horizontal } = custom;
   React.useEffect(() => {
-    if (error || userError || errorSignUp || errorLoadUser) {
+    if (
+      error ||
+      userError ||
+      errorSignUp ||
+      errorLoadUser ||
+      profileError ||
+      resetPasswordError ||
+      message
+    ) {
       setCustom({ ...custom, open: true });
     } else {
       setCustom({ ...custom, open: false });
       dispatch(clearErrors());
       dispatch(clearUserErrors());
     }
-  }, [error, dispatch, userError]);
+  }, [error, dispatch, userError, profileError, resetPasswordError, message]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -51,8 +64,18 @@ export default function CustomizedSnackbars() {
         autoHideDuration={6000}
         onClose={handleClose}
       >
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          {error || userError || errorSignUp || errorLoadUser}
+        <Alert
+          onClose={handleClose}
+          severity={message ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {error ||
+            userError ||
+            errorSignUp ||
+            errorLoadUser ||
+            profileError ||
+            resetPasswordError ||
+            message}
         </Alert>
       </Snackbar>
     </>
