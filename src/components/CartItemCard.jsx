@@ -13,18 +13,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { Add, Remove } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import { addItemsToCart } from "../store/actions/cartAction";
+import { addItemsToCart, removeCartItem } from "../store/actions/cartAction";
 
 function CartItemCard({ item }) {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = React.useState(item.quantity);
+
+  const { cartItems } = useSelector((state) => state.cart);
 
   const increaseQuantity = (id) => {
     if (item?.stock <= quantity) {
       return;
     }
     setQuantity(quantity + 1);
-    dispatch(addItemsToCart(id, quantity + 1));
+    dispatch(addItemsToCart(id, quantity + 1, cartItems));
   };
 
   const decreaseQuantity = (id) => {
@@ -32,8 +34,13 @@ function CartItemCard({ item }) {
       return;
     }
     setQuantity((prev) => prev - 1);
-    dispatch(addItemsToCart(id, quantity - 1));
+    dispatch(addItemsToCart(id, quantity - 1, cartItems));
   };
+
+  const removeCartHandler = (id) => {
+    dispatch(removeCartItem(id));
+  };
+
   return (
     <Card
       sx={{
@@ -64,7 +71,11 @@ function CartItemCard({ item }) {
             sx={{ fontWeight: 600, ml: { xs: 2, sm: 0 }, mr: { xs: 2, sm: 0 } }}
           >{`Price $${item.price}`}</Typography>
           <CardActions>
-            <Button variant="contained" color="error">
+            <Button
+              onClick={() => removeCartHandler(item.product)}
+              variant="contained"
+              color="error"
+            >
               Remove
             </Button>
           </CardActions>

@@ -4,13 +4,12 @@ import { useTheme } from "@mui/material/styles";
 import SwipeableViews from "react-swipeable-views";
 import { Login, Register } from "../components";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import Alert from "../Layout/Alert";
 import MetaData from "../Meta/MetaData";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -44,8 +43,12 @@ function Authentication() {
     setValue(index);
   };
 
+  const location = useLocation().search
+    ? useLocation().search.split("=")[1]
+    : "/account";
+
   React.useEffect(() => {
-    isAuthenticated && history.push("/account");
+    isAuthenticated && history.push(location);
   }, [isAuthenticated, history]);
 
   return (

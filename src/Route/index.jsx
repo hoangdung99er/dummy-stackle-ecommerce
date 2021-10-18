@@ -10,6 +10,8 @@ import {
   ResetPassword,
   ForgotPassword,
   Cart,
+  Shipping,
+  ConfirmOrder,
 } from "../Pages";
 import ProtectRoute from "./protectRoute";
 
@@ -27,6 +29,8 @@ export default () => {
       <Route path="/password/forgot" component={ForgotPassword} />
       <Route path="/password/reset/:token" component={ResetPassword} />
       <Route path="/cart" component={Cart} />
+      <ProtectRoute path="/shipping" component={Shipping} />
+      <ProtectRoute path="/order/confirm" component={ConfirmOrder} />
     </Switch>
   );
 };

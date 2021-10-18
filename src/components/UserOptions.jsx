@@ -6,6 +6,7 @@ import {
   AccountCircle,
   FormatListNumberedRtl,
   Logout,
+  ShoppingBag,
 } from "@mui/icons-material";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,12 +14,23 @@ import { onLogoutAction } from "../store/actions/userActions";
 
 function UserOptions() {
   const history = useHistory();
+  const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user);
+  const [innerWidth, setInnerWidth] = React.useState(0);
   const dispatch = useDispatch();
 
   const actions = [
     { icon: <AccountCircle />, name: "Profile", func: account },
     { icon: <FormatListNumberedRtl />, name: "Orders", func: orders },
+    {
+      icon: (
+        <ShoppingBag
+          sx={{ color: cartItems?.length > 0 ? "tomato" : "unset" }}
+        />
+      ),
+      name: `Cart (${cartItems?.length || 0})`,
+      func: cart,
+    },
     { icon: <Logout />, name: "Log Out", func: logoutUser },
   ];
 
@@ -45,12 +57,25 @@ function UserOptions() {
     dispatch(onLogoutAction());
   }
 
+  function cart() {
+    history.push("/cart");
+  }
+
+  React.useEffect(() => {
+    const updateSize = () => {
+      setInnerWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", updateSize);
+
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
   return (
     <React.Fragment>
       <Box
         sx={{
           position: "fixed",
-          top: 50,
+          top: 60,
           right: 2,
           height: 320,
           transform: "translateZ(0px)",
@@ -76,6 +101,7 @@ function UserOptions() {
               icon={action.icon}
               tooltipTitle={action.name}
               onClick={action.func}
+              tooltipOpen={innerWidth <= 600 ? true : false}
             />
           ))}
         </SpeedDial>

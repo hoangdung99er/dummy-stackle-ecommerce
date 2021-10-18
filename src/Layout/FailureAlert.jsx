@@ -7,7 +7,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function CustomizedSnackbars() {
+export default function CustomizedSnackbars({ isPhoneValid }) {
   const dispatch = useDispatch();
   const { message } = useSelector((state) => state.cart);
 
@@ -25,7 +25,7 @@ export default function CustomizedSnackbars() {
       setCustom({ ...custom, open: false });
       dispatch(clearMessage());
     }
-  }, [message]);
+  }, [message, isPhoneValid]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -44,7 +44,7 @@ export default function CustomizedSnackbars() {
         autoHideDuration={2000}
         onClose={handleClose}
       >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
           {message}
         </Alert>
       </Snackbar>

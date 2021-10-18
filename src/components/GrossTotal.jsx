@@ -1,10 +1,14 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
+import { useHistory } from "react-router-dom";
 
 function GrossTotal({ cartItems }) {
   const total = cartItems?.reduce(function (prev, item) {
     return prev + item.price * item.quantity;
   }, 0);
+
+  const history = useHistory();
+
   return (
     <Box
       sx={{
@@ -26,7 +30,12 @@ function GrossTotal({ cartItems }) {
           {`$${total}`}
         </Typography>
       </Box>
-      <Button fullWidth variant="contained" color="primary">
+      <Button
+        onClick={() => history.push("/login?redirect=shipping")}
+        fullWidth
+        variant="contained"
+        color="primary"
+      >
         Checkout
       </Button>
     </Box>

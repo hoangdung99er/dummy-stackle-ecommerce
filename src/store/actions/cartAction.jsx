@@ -1,7 +1,7 @@
 import * as types from "../constants/cartConstant";
 import { FetchAPI } from "../../store/lib/callApi";
 
-export const addItemsToCart = (id, quantity) => {
+export const addItemsToCart = (id, quantity, cartItems) => {
   return async (dispatch, getState) => {
     dispatch({
       type: types.ADD_TO_CART_SUCCESS,
@@ -27,6 +27,36 @@ export const addItemsToCart = (id, quantity) => {
         JSON.stringify(getState().cart.cartItems)
       );
     }
+  };
+};
+
+export const removeCartItem = (id) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: types.REMOVE_CART_ITEM,
+      payload: {
+        id,
+      },
+    });
+
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(getState().cart.cartItems)
+    );
+  };
+};
+
+export const saveShippingInfo = (data) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: types.SAVE_SHIPPING_INFO,
+      payload: data,
+    });
+
+    localStorage.setItem(
+      "shippingInfo",
+      JSON.stringify(getState().cart.shippingInfo)
+    );
   };
 };
 

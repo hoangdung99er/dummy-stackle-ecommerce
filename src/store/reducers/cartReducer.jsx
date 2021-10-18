@@ -2,6 +2,7 @@ import * as types from "../constants/cartConstant";
 
 const initialState = {
   cartItems: [],
+  shippingInfo: {},
 };
 
 export const cartReducer = (state = initialState, { type, payload }) => {
@@ -31,11 +32,28 @@ export const cartReducer = (state = initialState, { type, payload }) => {
         ...state,
         message: "Item added to card",
       };
-
     case types.CLEAR_MESSAGE:
       return {
         ...state,
         message: null,
+      };
+    case types.REMOVE_CART_ITEM:
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(
+          (item) => item.product !== payload.id
+        ),
+        message: "Item was removed out from cart",
+      };
+    case types.SAVE_SHIPPING_INFO:
+      return {
+        ...state,
+        shippingInfo: payload,
+      };
+    case types.SUBMIT_SHIPPING_INFO_FAILURE:
+      return {
+        ...state,
+        message: payload,
       };
     default:
       return state;

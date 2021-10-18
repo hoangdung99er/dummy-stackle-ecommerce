@@ -31,6 +31,7 @@ function ProductDetails({ match }) {
   const { product, loading, error } = useSelector(
     (state) => state.productDetails
   );
+  const { cartItems } = useSelector((state) => state.cart);
 
   const [quantity, setQuantity] = React.useState(1);
 
@@ -53,7 +54,7 @@ function ProductDetails({ match }) {
   };
 
   const addToCartHandler = () => {
-    dispatch(addItemsToCart(match.params.id, quantity));
+    dispatch(addItemsToCart(match.params.id, quantity, cartItems));
   };
 
   const handleChangeQuantity = (e) => {
@@ -82,6 +83,7 @@ function ProductDetails({ match }) {
             display: "flex",
             flexDirection: { xs: "column", sm: "row" },
             justifyContent: "center",
+            minHeight: "65vh",
           }}
         >
           {loading ? (
@@ -94,8 +96,8 @@ function ProductDetails({ match }) {
               />
             </Box>
           ) : (
-            <CustomImageBox>
-              <Carousel fullHeightHover>
+            <div>
+              <Carousel>
                 {product?.images &&
                   product.images.map((item, i) => (
                     <CustomImage
@@ -105,7 +107,7 @@ function ProductDetails({ match }) {
                     />
                   ))}
               </Carousel>
-            </CustomImageBox>
+            </div>
           )}
 
           {loading ? (
@@ -315,15 +317,6 @@ const CustomImage = styled("img")(({ theme }) => ({
   },
   [theme.breakpoints.up("sm")]: {
     width: "100%",
-  },
-}));
-
-const CustomImageBox = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.up("xs")]: {
-    width: "100%",
-  },
-  [theme.breakpoints.up("sm")]: {
-    width: "60%",
   },
 }));
 
