@@ -12,10 +12,16 @@ import {
   Cart,
   Shipping,
   ConfirmOrder,
+  Payment,
+  SuccessOrder,
+  MyOrder,
+  OrderDetails,
 } from "../Pages";
 import ProtectRoute from "./protectRoute";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
-export default () => {
+export default ({ stripeKey }) => {
   return (
     <Switch>
       <Route path="/" exact component={Homepage} />
@@ -30,7 +36,16 @@ export default () => {
       <Route path="/password/reset/:token" component={ResetPassword} />
       <Route path="/cart" component={Cart} />
       <ProtectRoute path="/shipping" component={Shipping} />
-      <ProtectRoute path="/order/confirm" component={ConfirmOrder} />
+      <ProtectRoute path="/order/confirm" exact component={ConfirmOrder} />
+      <ProtectRoute path="/order/success" exact component={SuccessOrder} />
+      <ProtectRoute path="/orders" component={MyOrder} />
+      <ProtectRoute path="/order/:id" exact component={OrderDetails} />
+
+      {stripeKey && (
+        <Elements stripe={loadStripe(stripeKey)}>
+          <ProtectRoute path="/process/payment" component={Payment} />
+        </Elements>
+      )}
     </Switch>
   );
 };

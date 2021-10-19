@@ -17,6 +17,7 @@ export default function CustomizedSnackbars() {
     errorSignUp,
     errorLoadUser,
   } = useSelector((state) => state.user);
+  const { error: reviewError } = useSelector((state) => state.newReview);
   const { message, error: resetPasswordError } = useSelector(
     (state) => state.forgotPassword
   );
@@ -36,7 +37,8 @@ export default function CustomizedSnackbars() {
       errorLoadUser ||
       profileError ||
       resetPasswordError ||
-      message
+      message ||
+      reviewError
     ) {
       setCustom({ ...custom, open: true });
     } else {
@@ -44,7 +46,14 @@ export default function CustomizedSnackbars() {
       dispatch(clearErrors());
       dispatch(clearUserErrors());
     }
-  }, [error, dispatch, userError, profileError, resetPasswordError, message]);
+  }, [
+    error,
+    dispatch,
+    userError,
+    profileError,
+    resetPasswordError,
+    message || reviewError,
+  ]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -75,7 +84,8 @@ export default function CustomizedSnackbars() {
             errorLoadUser ||
             profileError ||
             resetPasswordError ||
-            message}
+            message ||
+            reviewError}
         </Alert>
       </Snackbar>
     </>

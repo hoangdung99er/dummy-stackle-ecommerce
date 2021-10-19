@@ -5,7 +5,7 @@ import FailureAlert from "../Layout/FailureAlert";
 import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import { saveShippingInfo } from "../store/actions/cartAction";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   Typography,
   Button,
@@ -20,6 +20,7 @@ import Stepper from "../Layout/Stepper";
 function ConfirmOrder() {
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user);
+  const history = useHistory();
 
   const subtotal = cartItems.reduce((prev, item) => {
     return prev + item.quantity * item.price;
@@ -32,6 +33,19 @@ function ConfirmOrder() {
   const totalPrice = subtotal + shippingCharges + tax;
 
   const address = `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.pinCode}, ${shippingInfo.country}`;
+
+  const proceedToPayment = () => {
+    const data = {
+      subtotal,
+      shippingCharges,
+      tax,
+      totalPrice,
+    };
+
+    sessionStorage.setItem("orderInfo", JSON.stringify(data));
+
+    history.push("/process/payment");
+  };
 
   return (
     <React.Fragment>
@@ -47,9 +61,24 @@ function ConfirmOrder() {
         }}
       >
         <Box sx={{ width: "100%", mt: 10 }}>
-          <Stepper activeStep={0} />
-          <Box sx={{ width: "100%", mt: 4, minHeight: "90%", display: "flex" }}>
-            <Box component="div" sx={{ width: "70%", mr: 2 }}>
+          <Stepper activeStep={1} />
+          <Box
+            sx={{
+              width: "100%",
+              mt: 4,
+              minHeight: "90%",
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: "center",
+            }}
+          >
+            <Box
+              component="div"
+              sx={{
+                width: { xs: "90%", sm: "70%" },
+                mr: 2,
+              }}
+            >
               <Box sx={{ mb: 3 }}>
                 <Typography variant="h4">Shipping Info</Typography>
                 <Stack sx={{ mt: 3, ml: 4 }} direction="column" spacing={4}>
@@ -79,14 +108,14 @@ function ConfirmOrder() {
               <Box sx={{ mt: 5 }}>
                 <Typography variant="h4">Your Cart Items</Typography>
 
-                <Box sx={{ height: "50vh", overflowY: "auto" }}>
+                <Box sx={{ minHeight: "20vh", overflowY: "auto" }}>
                   {cartItems &&
                     cartItems.map((item) => (
                       <Card key={item.product} sx={{ mt: 3 }}>
                         <CardContent sx={{ display: "flex" }}>
                           <Box
                             sx={{
-                              width: { xs: "60%", sm: "70%" },
+                              width: { xs: "50%", sm: "70%" },
                               display: "flex",
                               alignItems: "center",
                             }}
@@ -100,7 +129,7 @@ function ConfirmOrder() {
                           </Box>
                           <Box
                             sx={{
-                              width: "30%",
+                              width: { xs: "50%", sm: "30%" },
                               display: "flex",
                               alignItems: "center",
                             }}
@@ -125,7 +154,7 @@ function ConfirmOrder() {
             <Box
               component="div"
               sx={{
-                width: { xs: "40%", sm: "30%" },
+                width: { xs: "90%", sm: "30%" },
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -196,6 +225,7 @@ function ConfirmOrder() {
                   size="large"
                   color="warning"
                   fullWidth
+                  onClick={proceedToPayment}
                 >
                   Proceed To Payment
                 </Button>

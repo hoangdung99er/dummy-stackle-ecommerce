@@ -6,6 +6,7 @@ import Footer from "./Layout/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { onLoadUserAction } from "./store/actions/userActions";
 import { UserOptions } from "./components";
+import { FetchAPI } from "./store/lib/callApi";
 
 function App() {
   const [position, setPosition] = React.useState("left");
@@ -16,10 +17,20 @@ function App() {
     setIsOpen(isOpen);
   };
 
+  const [stripeKey, setStripeKey] = React.useState("");
+
+  const getStripeApiKey = React.useCallback(async () => {
+    const { responseData } = await FetchAPI("/stripekey");
+
+    setStripeKey(responseData?.stripeApiKey);
+  }, []);
+
   const { isAuthenticated, user } = useSelector((state) => state.user);
 
   React.useEffect(() => {
     dispatch(onLoadUserAction());
+
+    getStripeApiKey();
   }, []);
 
   return (
@@ -28,7 +39,7 @@ function App() {
 
       {isAuthenticated && <UserOptions user={user} />}
       <Drawer setIsOpen={setIsOpen} setPosition={setPosition} isOpen={isOpen} />
-      <PageRouter />
+      <PageRouter stripeKey={stripeKey} />
       <Footer />
     </>
   );

@@ -70,3 +70,40 @@ export const productDetailsReducer = (
       return state;
   }
 };
+
+export const newReviewReducer = (state = {}, { type, payload }) => {
+  switch (type) {
+    case types.NEW_REVIEW_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.NEW_REVIEW_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: payload,
+        message: "Review Submitted Successfully!",
+      };
+    case types.NEW_REVIEW_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
+      };
+    case types.NEW_REVIEW_RESET:
+      return {
+        ...state,
+        success: false,
+        message: null,
+      };
+    case types.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+        message: null,
+      };
+    default:
+      return state;
+  }
+};

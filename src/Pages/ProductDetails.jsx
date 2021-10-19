@@ -12,10 +12,17 @@ import {
   Divider,
   Skeleton,
   Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import { useSelector, useDispatch } from "react-redux";
-import { getProductDetails } from "../store/actions/productAction";
+import {
+  getProductDetails,
+  createNewReview,
+} from "../store/actions/productAction";
 import { useParams } from "react-router-dom";
 import { Add, Remove } from "@mui/icons-material";
 import Loader from "../Layout/Loader";
@@ -31,13 +38,18 @@ function ProductDetails({ match }) {
   const { product, loading, error } = useSelector(
     (state) => state.productDetails
   );
+  const { id } = useParams();
+  const { success } = useSelector((state) => state.newReview);
   const { cartItems } = useSelector((state) => state.cart);
 
   const [quantity, setQuantity] = React.useState(1);
+  const [rating, setRating] = React.useState(0);
+  const [comment, setComment] = React.useState("");
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     dispatch(getProductDetails(match.params.id));
-  }, [dispatch]);
+  }, [dispatch, success]);
 
   const increaseQuantity = () => {
     if (product?.stock <= quantity) {
@@ -59,6 +71,25 @@ function ProductDetails({ match }) {
 
   const handleChangeQuantity = (e) => {
     setQuantity(e.target.value);
+  };
+
+  const handleCloseSubmitReview = () => {
+    setOpen(false);
+  };
+
+  const handleOpenSubmitReview = () => {
+    setOpen(true);
+  };
+
+  const submitReviewHandler = () => {
+    const reviewData = {
+      rating,
+      comment,
+      productId: id,
+    };
+
+    dispatch(createNewReview(reviewData));
+    setOpen(false);
   };
 
   return (
@@ -228,6 +259,7 @@ function ProductDetails({ match }) {
                     onClick={addToCartHandler}
                     size="large"
                     variant="contained"
+                    disabled={product.stock < 1 ? true : false}
                   >
                     Add To Cart
                   </Button>
@@ -244,6 +276,7 @@ function ProductDetails({ match }) {
                   sx={{ backgroundColor: "tomato" }}
                   size="large"
                   variant="contained"
+                  onClick={handleOpenSubmitReview}
                 >
                   Submit Review
                 </Button>
@@ -263,6 +296,45 @@ function ProductDetails({ match }) {
             REVIEWS
           </Typography>
           <Divider />
+
+          <Dialog
+            aria-labelledby="simple-dialog-title"
+            open={open}
+            onClose={handleCloseSubmitReview}
+          >
+            <DialogTitle>Submit Review</DialogTitle>
+            <DialogContent
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <Rating
+                onChange={(e) => setRating(e.target.value)}
+                value={Number(rating)}
+                size="largt"
+              />
+
+              <TextField
+                id="outlined-multiline-static"
+                label="Your Review"
+                multiline
+                rows={4}
+                variant="filled"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={submitReviewHandler} color="primary">
+                Submit
+              </Button>
+              <Button onClick={handleCloseSubmitReview} color="secondary">
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
         {loading ? (
           <Loader />

@@ -50,6 +50,32 @@ export const getProductDetails = (id) => async (dispatch) => {
   }
 };
 
+export const createNewReview = (reviewData) => async (dispatch) => {
+  dispatch({ type: types.NEW_REVIEW_REQUEST });
+
+  const config = {
+    "Content-Type": "application/json",
+  };
+
+  const { responseData, error } = await FetchAPI(
+    `/review`,
+    "PUT",
+    reviewData,
+    config
+  );
+  if (!error) {
+    dispatch({
+      type: types.NEW_REVIEW_SUCCESS,
+      payload: responseData?.success,
+    });
+  } else {
+    dispatch({
+      type: types.NEW_REVIEW_FAILURE,
+      payload: error,
+    });
+  }
+};
+
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: types.CLEAR_ERRORS });
 };

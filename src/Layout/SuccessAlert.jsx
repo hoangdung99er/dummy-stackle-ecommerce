@@ -2,6 +2,7 @@ import React from "react";
 import { Alert as MuiAlert, Snackbar } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { clearMessage } from "../store/actions/cartAction";
+import { clearErrors } from "../store/actions/productAction";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -10,6 +11,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 export default function CustomizedSnackbars() {
   const dispatch = useDispatch();
   const { message } = useSelector((state) => state.cart);
+  const { message: reviewMessage } = useSelector((state) => state.newReview);
 
   const [custom, setCustom] = React.useState({
     open: false,
@@ -19,13 +21,14 @@ export default function CustomizedSnackbars() {
 
   const { open, vertical, horizontal } = custom;
   React.useEffect(() => {
-    if (message) {
+    if (message || reviewMessage) {
       setCustom({ ...custom, open: true });
     } else {
       setCustom({ ...custom, open: false });
       dispatch(clearMessage());
+      dispatch(clearErrors());
     }
-  }, [message]);
+  }, [message, reviewMessage]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -33,6 +36,7 @@ export default function CustomizedSnackbars() {
     }
     setCustom({ ...custom, open: false });
     dispatch(clearMessage());
+    dispatch(clearErrors());
   };
 
   return (
@@ -45,7 +49,7 @@ export default function CustomizedSnackbars() {
         onClose={handleClose}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          {message}
+          {message || reviewMessage}
         </Alert>
       </Snackbar>
     </>

@@ -10,3 +10,7 @@ export { default as ResetPassword } from "./ResetPassword";
 export { default as Cart } from "./Cart";
 export { default as Shipping } from "./Shipping";
 export { default as ConfirmOrder } from "./ConfirmOrder";
+export { default as Payment } from "./Payment";
+export { default as SuccessOrder } from "./SuccessOrder";
+export { default as MyOrder } from "./MyOrder";
+export { default as OrderDetails } from "./OrderDetails";

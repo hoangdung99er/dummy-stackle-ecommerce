@@ -8,7 +8,7 @@ import {
   Logout,
   ShoppingBag,
 } from "@mui/icons-material";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { onLogoutAction } from "../store/actions/userActions";
 
