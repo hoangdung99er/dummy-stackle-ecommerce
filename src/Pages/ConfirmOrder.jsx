@@ -1,10 +1,8 @@
 import React from "react";
 import MetaData from "../Meta/MetaData";
-import * as types from "../store/constants/cartConstant";
 import FailureAlert from "../Layout/FailureAlert";
 import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
-import { saveShippingInfo } from "../store/actions/cartAction";
 import { Link, useHistory } from "react-router-dom";
 import {
   Typography,

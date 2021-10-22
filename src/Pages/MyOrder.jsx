@@ -3,33 +3,13 @@ import MetaData from "../Meta/MetaData";
 import FailureAlert from "../Layout/FailureAlert";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, LinearProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Launch } from "@mui/icons-material";
-import { DataGrid, GridOverlay } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import Loader from "../Layout/Loader";
-import { myOrders } from "../store/actions/orderReducer";
-
-function CustomLoadingOverlay() {
-  return (
-    <GridOverlay>
-      <div style={{ position: "absolute", top: 0, width: "100%" }}>
-        <LinearProgress />
-      </div>
-    </GridOverlay>
-  );
-}
-
-function CustomNoRowsOverlay() {
-  return (
-    <GridOverlay
-      sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-    >
-      <Typography variant="body2" sx={{ fontWeight: 600 }}>
-        No Rows
-      </Typography>
-    </GridOverlay>
-  );
-}
+import { myOrders } from "../store/actions/orderActions";
+import CustomLoadingOverlay from "../Layout/CustomLoadingOverlay";
+import CustomNoRowsOverlay from "../Layout/CustomNoRowOverlay";
 
 function MyOrder() {
   const { loading, error, orders } = useSelector((state) => state.myOrders);

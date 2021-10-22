@@ -3,9 +3,9 @@ import MetaData from "../Meta/MetaData";
 import FailureAlert from "../Layout/FailureAlert";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Typography, CardContent, Divider } from "@mui/material";
+import { Box, Typography, CardContent, Divider, Card } from "@mui/material";
 import Loader from "../Layout/Loader";
-import { onOrderDetails } from "../store/actions/orderReducer";
+import { onOrderDetails } from "../store/actions/orderActions";
 import { styled } from "@mui/material/styles";
 
 function OrderDetails() {
@@ -38,7 +38,7 @@ function OrderDetails() {
           maxWidth: { xs: "98%", sm: "85%" },
           margin: "0 auto",
           display: "flex",
-          height: "75vh",
+          minHeight: "75vh",
           bgcolor: "common.white",
         }}
       >
@@ -47,7 +47,6 @@ function OrderDetails() {
             sx={{
               width: "100%",
               mt: 5,
-              minHeight: "75%",
             }}
           >
             <Box>
@@ -120,10 +119,10 @@ function OrderDetails() {
                 <Typography sx={{ fontWeight: 600 }} variant="h5">
                   Order Items
                 </Typography>
-                <Box sx={{ minHeight: "20vh", overflowY: "auto" }}>
+                <Box sx={{ minHeight: "40vh", overflowY: "auto" }}>
                   {order.orderItems &&
                     order.orderItems.map((item) => (
-                      <Card sx={{ mt: 3 }}>
+                      <Card key={item.product} sx={{ mt: 3 }}>
                         <CardContent
                           sx={{ display: "flex", alignItem: "center" }}
                         >

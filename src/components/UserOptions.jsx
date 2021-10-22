@@ -7,6 +7,7 @@ import {
   FormatListNumberedRtl,
   Logout,
   ShoppingBag,
+  AddShoppingCart,
 } from "@mui/icons-material";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -22,6 +23,7 @@ function UserOptions() {
   const actions = [
     { icon: <AccountCircle />, name: "Profile", func: account },
     { icon: <FormatListNumberedRtl />, name: "Orders", func: orders },
+    { icon: <AddShoppingCart />, name: "Products", func: products },
     {
       icon: (
         <ShoppingBag
@@ -43,7 +45,7 @@ function UserOptions() {
   }
 
   function dashboard() {
-    history.push("/dashboard");
+    history.push("/admin/dashboard");
   }
 
   function orders() {
@@ -61,6 +63,10 @@ function UserOptions() {
     history.push("/cart");
   }
 
+  function products() {
+    history.push("/products");
+  }
+
   React.useEffect(() => {
     const updateSize = () => {
       setInnerWidth(window.innerWidth);
@@ -75,7 +81,7 @@ function UserOptions() {
       <Box
         sx={{
           position: "fixed",
-          top: 60,
+          top: user?.role === "admin" ? 180 : 120,
           right: 2,
           height: 320,
           transform: "translateZ(0px)",

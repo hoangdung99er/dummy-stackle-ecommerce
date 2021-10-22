@@ -76,6 +76,142 @@ export const createNewReview = (reviewData) => async (dispatch) => {
   }
 };
 
+export const getAdminProducts = () => async (dispatch) => {
+  dispatch({ type: types.ADMIN_PRODCTS_REQUEST });
+
+  const { responseData, error } = await FetchAPI(`/admin/products`);
+
+  if (!error) {
+    dispatch({
+      type: types.ADMIN_PRODCTS_SUCCESS,
+      payload: responseData?.products,
+    });
+  } else {
+    dispatch({
+      type: types.ADMIN_PRODCTS_FAILURE,
+      payload: error,
+    });
+  }
+};
+
+export const getAllReviews = (id) => async (dispatch) => {
+  dispatch({ type: types.ALL_REVIEW_REQUEST });
+
+  const { responseData, error } = await FetchAPI(`/reviews?productId=${id}`);
+
+  if (!error) {
+    dispatch({
+      type: types.ALL_REVIEW_SUCCESS,
+      payload: responseData,
+    });
+  } else {
+    dispatch({
+      type: types.ALL_REVIEW_FAILURE,
+      payload: error,
+    });
+  }
+};
+
+export const deleteReview = (reviewId, productId) => async (dispatch) => {
+  dispatch({ type: types.DELETE_REVIEW_REQUEST });
+
+  const { responseData, error } = await FetchAPI(
+    `/reviews?productId=${productId}&id=${reviewId}`,
+    "DELETE",
+    null,
+    {}
+  );
+
+  if (!error) {
+    dispatch({
+      type: types.DELETE_REVIEW_SUCCESS,
+      payload: responseData,
+    });
+  } else {
+    dispatch({
+      type: types.DELETE_REVIEW_FAILURE,
+      payload: error,
+    });
+  }
+};
+
+export const createProduct = (productDetails) => async (dispatch) => {
+  dispatch({ type: types.NEW_PRODUCT_REQUEST });
+
+  const config = {
+    "Content-Type": "application/json",
+  };
+
+  const { responseData, error } = await FetchAPI(
+    `/admin/product/new`,
+    "POST",
+    productDetails,
+    config
+  );
+
+  if (!error) {
+    dispatch({
+      type: types.NEW_PRODUCT_SUCCESS,
+      payload: responseData,
+    });
+  } else {
+    dispatch({
+      type: types.NEW_REVIEW_FAILURE,
+      payload: error,
+    });
+  }
+};
+
+export const deleteProduct = (id) => async (dispatch) => {
+  dispatch({ type: types.DELETE_PRODUCT_REQUEST });
+
+  const { responseData, error } = await FetchAPI(
+    `/admin/product/${id}`,
+    "DELETE",
+    null,
+    {}
+  );
+
+  if (!error) {
+    dispatch({
+      type: types.DELETE_PRODUCT_SUCCESS,
+      payload: responseData,
+    });
+  } else {
+    dispatch({
+      type: types.DELETE_PRODUCT_FAILURE,
+      payload: error,
+    });
+  }
+};
+
+export const updateProduct = (id, productDetails) => async (dispatch) => {
+  dispatch({ type: types.UPDATE_PRODUCT_REQUEST });
+
+  const config = {
+    "Content-Type": "application/json",
+  };
+
+  const { responseData, error } = await FetchAPI(
+    `/admin/product/${id}`,
+    "PUT",
+    productDetails,
+    config
+  );
+
+  if (!error) {
+    dispatch({
+      type: types.UPDATE_PRODUCT_SUCCESS,
+      payload: responseData,
+    });
+  } else {
+    dispatch({
+      type: types.UPDATE_PRODUCT_FAILURE,
+      payload: error,
+    });
+  }
+};
+
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: types.CLEAR_ERRORS });
 };

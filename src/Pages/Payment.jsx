@@ -14,7 +14,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { createOrder } from "../store/actions/orderReducer";
+import { createOrder } from "../store/actions/orderActions";
 import Stepper from "../Layout/Stepper";
 import { FetchAPI } from "../store/lib/callApi";
 import useResponsiveFontSize from "../useReponsiveFont";

@@ -3,6 +3,7 @@ import PageRouter from "./Route";
 import Header from "./Layout/Header";
 import Drawer from "./Layout/Drawer";
 import Footer from "./Layout/Footer";
+import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { onLoadUserAction } from "./store/actions/userActions";
 import { UserOptions } from "./components";
@@ -33,14 +34,20 @@ function App() {
     getStripeApiKey();
   }, []);
 
+  window.addEventListener("contextmenu", (e) => e.preventDefault());
+
+  const location = useLocation();
+
+  const adminPathname = location.pathname.split("/")[1];
+
   return (
     <>
-      <Header handleDrawer={handleDrawer} />
+      {adminPathname !== "admin" && <Header handleDrawer={handleDrawer} />}
 
       {isAuthenticated && <UserOptions user={user} />}
       <Drawer setIsOpen={setIsOpen} setPosition={setPosition} isOpen={isOpen} />
       <PageRouter stripeKey={stripeKey} />
-      <Footer />
+      {adminPathname !== "admin" && <Footer />}
     </>
   );
 }

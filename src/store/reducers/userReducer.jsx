@@ -67,6 +67,120 @@ export const userReducer = (state = initialState, { type, payload }) => {
   }
 };
 
+export const allUsersReducer = (state = { users: [] }, { type, payload }) => {
+  switch (type) {
+    case types.ALL_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.ALL_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        users: payload?.users,
+      };
+    case types.ALL_USER_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
+      };
+    case types.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userDetailsReducer = (state = { user: {} }, { type, payload }) => {
+  switch (type) {
+    case types.USER_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.USER_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: payload?.user,
+      };
+    case types.USER_DETAILS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
+      };
+    case types.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    case types.CLEAR_USER_DETAILS_AFTER_UPDATE:
+      return {
+        ...state,
+        user: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const handleUserReducer = (state = {}, { type, payload }) => {
+  switch (type) {
+    case types.UPDATE_USER_REQUEST:
+    case types.DELETE_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isUpdated: payload?.success,
+        message: "User was updated",
+      };
+    case types.DELETE_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isDeleted: payload?.success,
+        message: "User updated successfully",
+      };
+    case types.UPDATE_USER_FAILURE:
+    case types.DELETE_USER_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
+      };
+    case types.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+        message: null,
+      };
+    case types.CLEAR_ISDELETED:
+      return {
+        ...state,
+        isDeleted: false,
+        message: "User was deleted",
+      };
+    case types.CLEAR_ISUPDATED:
+      return {
+        ...state,
+        isUpdated: false,
+      };
+    default:
+      return state;
+  }
+};
+
 const initialStateProfile = {
   userProfile: {},
 };

@@ -203,6 +203,98 @@ export const onForgotPassword = (token, userData) => {
   };
 };
 
+export const getAllUsers = () => {
+  return async (dispatch) => {
+    dispatch({ type: types.ALL_USER_REQUEST });
+
+    const { responseData, error } = await FetchAPI(`/admin/users`);
+
+    if (!error) {
+      dispatch({
+        type: types.ALL_USER_SUCCESS,
+        payload: responseData,
+      });
+    } else {
+      dispatch({
+        type: types.ALL_USER_FAILURE,
+        payload: error,
+      });
+    }
+  };
+};
+
+export const deleteUser = (id) => {
+  return async (dispatch) => {
+    dispatch({ type: types.DELETE_USER_REQUEST });
+
+    const { responseData, error } = await FetchAPI(
+      `/admin/user/${id}`,
+      "DELETE",
+      null,
+      {}
+    );
+
+    if (!error) {
+      dispatch({
+        type: types.DELETE_USER_SUCCESS,
+        payload: responseData,
+      });
+    } else {
+      dispatch({
+        type: types.DELETE_USER_FAILURE,
+        payload: error,
+      });
+    }
+  };
+};
+
+export const getSingleUser = (id) => {
+  return async (dispatch) => {
+    dispatch({ type: types.USER_DETAILS_REQUEST });
+
+    const { responseData, error } = await FetchAPI(`/admin/user/${id}`);
+
+    if (!error) {
+      dispatch({
+        type: types.USER_DETAILS_SUCCESS,
+        payload: responseData,
+      });
+    } else {
+      dispatch({
+        type: types.USER_DETAILS_FAILURE,
+        payload: error,
+      });
+    }
+  };
+};
+
+export const onUpdateUser = (id, userData) => {
+  return async (dispatch) => {
+    dispatch({ type: types.UPDATE_USER_REQUEST });
+
+    const { responseData, error } = await FetchAPI(
+      `/admin/user/${id}`,
+      "PUT",
+      userData,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+
+    if (!error) {
+      dispatch({
+        type: types.UPDATE_USER_SUCCESS,
+        payload: responseData,
+      });
+    } else {
+      dispatch({
+        type: types.UPDATE_USER_FAILURE,
+        payload: error,
+      });
+    }
+  };
+};
+
 // Clearing Errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: types.CLEAR_ERRORS });
