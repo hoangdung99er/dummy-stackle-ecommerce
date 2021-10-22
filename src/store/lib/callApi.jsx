@@ -4,8 +4,7 @@ export const FetchAPI = async (
   body = null,
   headers = {}
 ) => {
-  const url =
-    "https://private-fuchsia-giraffatitan.glitch.me/api/v1" + endpoint;
+  const url = `${process.env.REACT_APP_API_URL}` + endpoint;
 
   try {
     const response = await fetch(url, {
